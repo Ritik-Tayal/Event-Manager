@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}{{ event.title }}{% endblock %}
+{% block content %}
+<h2>{{ event.title }}</h2>
+<p>{{ event.description }}</p>
+<p><strong>Location:</strong> {{ event.location }}</p>
+<p><strong>Start:</strong> {{ event.start_time }}</p>
+<p><strong>End:</strong> {{ event.end_time }}</p>
+<form action="/events/register/" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="event" value="{{ event.id }}">
+    <button type="submit">Register</button>
+</form>
+{% endblock %}
