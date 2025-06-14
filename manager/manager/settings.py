@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'event',
+    'telegram_bot',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +132,9 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
+
+
+CELERY_BROKER_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

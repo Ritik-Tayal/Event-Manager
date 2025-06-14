@@ -2,11 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Event, Registration
-from .forms import EventForm, RegistrationForm
+from .forms import EventForm, RegistrationForm, CustomUserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.views.generic import FormView
-
+from .tasks import send_registration_confirmation
 
 class EventListView(View):
     def get(self, request):
@@ -39,6 +39,7 @@ class RegistrationCreateView(LoginRequiredMixin, View):
             reg = form.save(commit=False)
             reg.user = request.user
             reg.save()
+            send_registration_confirmation.delay(reg.id)
             return redirect('my-registrations')
         return render(request, 'events/register_event.html', {'form': form})
 
@@ -49,7 +50,7 @@ class MyRegistrationsView(LoginRequiredMixin, View):
     
 class UserRegisterView(FormView):
     template_name = 'registration/register.html'
-    form_class = UserCreationForm
+    form_class = CustomUserCreationForm
     success_url = '/events/'
 
     def form_valid(self, form):
