@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'event',
-    'telegram_bot',
+    'telegrambot',
     'rest_framework',
 ]
 
@@ -138,3 +138,6 @@ CELERY_BROKER_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
 CELERY_RESULT_BACKEND = CELERY_BROKER_URL
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+
