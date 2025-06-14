@@ -18,6 +18,7 @@
     {% if not request.path == '/login/' and not request.path == '/register/' %}
         <header><h1>EventHub</h1></header>
         <nav>
+            <a href="/">Home</a>
             <a href="/events/">All Events</a>
             {% if user.is_authenticated %}
                 <a href="/events/create/">Create Event</a>

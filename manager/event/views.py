@@ -7,6 +7,8 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.views.generic import FormView
 from .tasks import send_registration_confirmation
+from django.views.generic import TemplateView
+
 
 class EventListView(View):
     def get(self, request):
@@ -36,12 +38,20 @@ class RegistrationCreateView(LoginRequiredMixin, View):
     def post(self, request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
+            event = form.cleaned_data['event']
+            already_registered = Registration.objects.filter(user=request.user, event=event).exists()
+            if already_registered:
+                return render(request, 'events/register_event.html', {
+                    'form': form,
+                    'error': 'You are already registered for this event.'
+                })
             reg = form.save(commit=False)
             reg.user = request.user
             reg.save()
             send_registration_confirmation.delay(reg.id)
             return redirect('my-registrations')
         return render(request, 'events/register_event.html', {'form': form})
+
 
 class MyRegistrationsView(LoginRequiredMixin, View):
     def get(self, request):
@@ -57,3 +67,6 @@ class UserRegisterView(FormView):
         user = form.save()
         login(self.request, user)
         return super().form_valid(form)
+    
+class HomePageView(TemplateView):
+    template_name = 'home.html'

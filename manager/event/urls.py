@@ -7,9 +7,11 @@ from .views import (
     RegistrationCreateView,
     MyRegistrationsView,
     UserRegisterView,
+    HomePageView,
 )
 
 urlpatterns = [
+    path('',HomePageView.as_view(),name='home'),
     path('events/', EventListView.as_view(), name='event-list'),
     path('events/<int:pk>/', EventDetailView.as_view(), name='event-detail'),
     path('events/create/', EventCreateView.as_view(), name='event-create'),

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome to EventHub{% endblock %}
+
+{% block content %}
+<h2>Welcome to EventHub 🎉</h2>
+<p>This is your one-stop platform for managing and discovering events.</p>
+
+<h3>What you can do:</h3>
+<ul>
+    <li>🔍 View all <a href="{% url 'event-list' %}">events</a></li>
+    <li>✏️ <a href="{% url 'event-create' %}">Create your own event</a></li>
+    <li>📝 <a href="{% url 'my-registrations' %}">View your registrations</a></li>
+    <li>🤖 Talk to our Telegram Bot</li>
+</ul>
+{% endblock %}
